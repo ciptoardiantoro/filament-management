@@ -9,11 +9,11 @@ class Section extends Model
 {
     use HasFactory;
     protected $filalbel = [
-        'calass_id',
         'name',
+        'calass_id',
     ];
 
-    public function classes()
+    public function class()
     {
         return $this->belongsTo(Classes::class);
     }
