@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     use HasFactory;
-    protected $filalbel = [
+
+    protected $fillable = [
+        'class_id',
         'name',
-        'calass_id',
     ];
+    // -> yang benar fillable
 
     public function class()
     {
