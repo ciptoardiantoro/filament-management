@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\StudentResource\Pages;
 use App\Filament\Resources\StudentResource\RelationManagers;
 use App\Models\Student;
+use App\Models\Section;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Get;
+
 
 use function Laravel\Prompts\select;
 
@@ -29,9 +32,17 @@ class StudentResource extends Resource
         return $form
             ->schema([
                 Select::make('class_id')
+                    ->live()
                     ->relationship(name: 'class', titleAttribute: 'name'),
-                // Select::make('section_id')
-                //     ->relationship(name: 'section', titleAttribute: 'name'),
+                Select::make('section_id')
+                    ->label('section')
+                    ->options(function (Get $get) {
+                        $classId = $get('class_id');
+
+                        if ($classId) {
+                            return Section::where('class_id', $classId)->pluck('name', 'id')->toArray();
+                        }
+                    }),
                 TextInput::make('name')
                     ->autofocus()
                     ->required(),
